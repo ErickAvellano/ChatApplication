@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>Chat Application</title>
+</head>
+<body>
+    <div id="login-container">
+        <div class="hero">
+            <div class="form-box">
+                <div class="button-box">
+                    <div id="btn"></div>
+                    <button type="button" class="toggle-btn" onclick="login()">Log In</button>
+                    <button type="button" class="toggle-btn" onclick="register()">Register</button>
+                </div>
+                <form id="login" class="input_group">
+                    <input type="text" id="login-username" placeholder="Username" required="">
+                    <input type="password" id="login-password" placeholder="Password" required="">
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+                <form id="register" class="input_group">
+                    <input type="text" id="username" placeholder="Username" required="">
+                    <input type="password" id="password" placeholder="Password" required="">
+                    <button type="submit" class="submit-btn">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="index-container" style="display: none;">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-center h-100">
+                <div class="col-md-8 col-xl-6 chat">
+                    <div class="card">
+                        <div class="card-header msg_head">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="/images/Logo.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon"></span>
+                                    </div>
+                                <div class="user_info">
+                                    <span>IT114 FINAL PROJECT GROUP 4 GC &nbsp; &nbsp; &nbsp;</span>
+                                    <p>0 Messages</p>
+                                </div>
+                                <div class="video_cam">
+                                    <span id="vid"><i class="fas fa-video"></i></span>
+                                    <span id="pho"><i class="fas fa-phone"></i></span>
+                                </div>
+                            </div>
+                            <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                            <div class="action_menu">
+                                <ul>
+                                    <li><i class="fas fa-user-circle"></i> View Member</li>
+                                    <li><i class="fas fa-users"></i> Add to close friends</li>
+                                    <li><i class="fas fa-plus"></i> Add to group</li>
+                                    <li><i class="fas fa-ban"></i> Leave Group</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body msg_card_body">
+                            <div class="d-flex justify-content-start mb-4">
+                            </div>
+                            <div id="welcome-message"></div>
+                        </div>
+                        <div class="card-footer" style="display: flex;">
+                            <div class="input-group">
+                                <div class="input-group-append">
+                                    <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                                </div>
+                                <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+                                <div class="input-group-append">
+                                    <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+var socket = io.connect('http://localhost:8000');
+function register() {
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
+    var z = document.getElementById("btn");
+    x.style.left = "-400px";
+    y.style.left = "50px";
+    z.style.left = "120px";
+}
+
+// Function to switch to the login form
+function login() {
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
+    var z = document.getElementById("btn");
+    x.style.left = "50px";
+    y.style.left = "450px";
+    z.style.left = "0px";
+}
+const registerForm = document.getElementById("register");
+const loginForm = document.getElementById("login");
+const loginLabel = document.querySelector(".login label");
+
+// Function to handle registration form submission
+registerForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // Prevent default form submission
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    // Save username and password in localStorage
+    localStorage.setItem(username, password);
+    alert("Registration successful. You can now login.");
+});
+
+// Function to handle login form submission
+loginForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // Prevent default form submission
+    const loginUsername = document.getElementById("login-username").value;
+    const password = document.getElementById("login-password").value;
+    // Check if username and password match
+    const storedPassword = localStorage.getItem(loginUsername);
+    if (storedPassword !== null && storedPassword === password) {
+        loginContainer.style.display = "none"; // Hide login container
+        indexContainer.style.display = "block"; // Show index container
+        username = loginUsername; // Set the value of username
+        // Emit the 'username' event with the username value
+        socket.emit('username', username);
+    } else {
+        alert("Invalid username or password.");
+    }
+});
+
+const sendButton = document.querySelector(".send_btn");
+const messageInput = document.querySelector(".type_msg");
+const chatWindow = document.querySelector(".msg_card_body");
+const chatCount = document.querySelector(".user_info p");
+const welcomeMessage = document.querySelector("#welcome-message");
+const loginContainer = document.getElementById("login-container");
+const indexContainer = document.getElementById("index-container");
+const onlineStatus = document.getElementById('online-status');
+let messageCounter = 0;
+
+socket.username = username;
+sendButton.addEventListener("click", () => {
+  const message = messageInput.value.trim();
+  if (message) {
+    const timestamp = new Date();
+    const data = {
+      username: socket.username,
+      text: message,
+      timestamp: timestamp.getTime(), // Using getTime() to get the timestamp in milliseconds
+    };
+    // Emit a message event to the server with the message data
+    socket.emit("message", data);
+
+    // Create the message container elements
+    const messageContainer = document.createElement('div');
+    const messageUsername = document.createElement('span'); 
+    const messageText = document.createElement('span');
+    const messageTime = document.createElement('span');
+
+    messageUsername.textContent = data.username;
+    messageText.textContent = message;
+    messageTime.textContent = timestamp.toLocaleTimeString();
+
+    messageContainer.appendChild(messageUsername);
+    messageContainer.appendChild(messageText);
+    messageContainer.appendChild(messageTime);
+
+    
+    messageContainer.classList.add('d-flex', 'justify-content-end', 'mb-4');
+    messageUsername.classList.add("username_send");
+    messageText.classList.add("msg_cotainer_send");
+    messageTime.classList.add("msg_time_send");
+
+    // Append the chat text message
+    chatWindow.appendChild(messageContainer);
+
+    messageInput.value = ""; 
+    messageCounter++;
+    chatCount.textContent = `${messageCounter} Messages`;
+  }
+});
+socket.on('message', function(data) {
+  if (socket.id !== data.senderId) { // Exclude the sender's socket ID
+    const messageContainer = document.createElement('div');
+    const messageText = document.createElement('span');
+    const messageTime = document.createElement('span');
+
+    messageText.textContent = data.text;
+    messageTime.textContent = new Date(data.timestamp).toLocaleTimeString();
+
+    messageContainer.appendChild(messageText);
+    messageContainer.appendChild(messageTime);
+
+    messageContainer.classList.add('d-flex', 'justify-content-start', 'mb-4');
+    messageText.classList.add("msg_cotainer");
+    messageTime.classList.add("msg_time");
+
+    chatWindow.appendChild(messageContainer);
+    messageCounter++;
+    chatCount.textContent = `${messageCounter} Messages`;
+  }
+});
+
+
+window.addEventListener("beforeunload", function() {
+    socket.emit('disconnect'); // Notify the server about the disconnection
+});
+socket.on('is_online', function(username) {
+  // Update the welcome message and online status when a user joins the chat
+  welcomeMessage.innerHTML = '🔵 <i>' + username + ' joined the chat.</i>';
+
+
+  onlineStatus.innerHTML = 'Online'; // You can use an icon or custom styling here if desired
+});
+socket.on('user_left', function(username) {
+  // Update the welcome message and online status when a user leaves the chat
+  welcomeMessage.innerHTML = '🔴 <i>' + username + ' left the chat.</i>';
+});
+
+
+</script>
+
+</html>
