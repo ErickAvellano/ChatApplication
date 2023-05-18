@@ -90,6 +90,19 @@
     </div>
 <script>
 var socket = io.connect('https://chat-6jmb.onrender.com');
+//var socket = io.connect('http://localhost:8000');
+//var socket = io.connect('http://192.168.1.5:8000');
+$(document).ready(function() {
+  $('#action_menu_btn').click(function() {
+    $('.action_menu').toggle();
+  });
+
+  $('li').has('i.fa-ban').click(function() {
+    if (confirm('Are you sure you want to leave the group?')) {
+      window.location.href = 'about:blank'; // Redirect to a blank page
+    }
+  });
+});
 function register() {
     var x = document.getElementById("login");
     var y = document.getElementById("register");
