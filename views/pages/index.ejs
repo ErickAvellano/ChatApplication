@@ -89,9 +89,9 @@
         </div>
     </div>
 <script>
-var socket = io.connect('https://chat-6jmb.onrender.com');
-//var socket = io.connect('http://localhost:8000');
-//var socket = io.connect('http://192.168.1.5:8000');
+//var socket = io.connect('https://chat-6jmb.onrender.com');
+var socket = io.connect('http://localhost:8000');
+//var socket = io.connect('http://192.168.3.6:8000');
 $(document).ready(function() {
   $('#action_menu_btn').click(function() {
     $('.action_menu').toggle();
@@ -168,7 +168,7 @@ sendButton.addEventListener("click", () => {
   if (message) {
     const timestamp = new Date();
     const data = {
-      username: username,
+      username: 'You',
       text: message,
       timestamp: timestamp.getTime(), // Using getTime() to get the timestamp in milliseconds
     };
@@ -190,8 +190,8 @@ sendButton.addEventListener("click", () => {
     messageContainer.appendChild(messageText);
     messageContainer.appendChild(messageTime);
 
-    messageContainer.classList.add('d-flex', 'justify-content-end', 'mb-4');
-    messageUsername.classList.add("username_send");
+    messageContainer.classList.add('d-flex', 'justify-content-end','mt-4', 'mb-4');
+    messageUsername.classList.add("username_send","mt-4");
     messageText.classList.add("msg_cotainer_send");
     messageTime.classList.add("msg_time_send");
 
@@ -218,8 +218,8 @@ socket.on('message', function(data) {
     messageContainer.appendChild(messageText);
     messageContainer.appendChild(messageTime);
 
-    messageContainer.classList.add('d-flex', 'justify-content-start', 'mb-4');
-    messageUsername.classList.add("username_send");
+    messageContainer.classList.add('d-flex', 'justify-content-start', 'mt-4','mb-4');
+    messageUsername.classList.add("username","mt-4");
     messageText.classList.add("msg_cotainer");
     messageTime.classList.add("msg_time");
 
