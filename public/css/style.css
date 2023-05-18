@@ -186,13 +186,13 @@
 
 .msg_cotainer {
 	margin-top: auto;
-	margin-bottom: auto;
-	margin-left: 70px;
-	border-radius: 25px;
-	background-color: #dec6a8;
-	padding: 10px;
-	position: relative;
-	  }
+    margin-bottom: auto;
+    margin-left: -30px;
+    border-radius: 25px;
+    background-color: #dec6a8;
+    padding: 10px;
+    position: relative;
+}
 	  
 
 .msg_cotainer_send {
@@ -211,8 +211,8 @@
     right: 50px;
     color: rgba(250, 250, 250, 0.5);
     font-size: 10px;
-    margin-top: 5px;
-    margin-right: 20px
+    margin-top: 0px;
+    margin-right: 20px;
 }
 
 .username_send{
@@ -226,13 +226,13 @@
   padding-bottom: 10px;
 }
 .username{
-	position: relative;
-    bottom: 34px;
-    right: -10px;
+position: relative;
+    bottom: -39px;
+    right: 0;
     color: rgba(250, 250, 250, 0.5);
     font-size: 10px;
-    margin-top: 5px;
-    margin-right: -80px;
+    margin-top: -55px;
+    margin-right: 10px;
     padding-bottom: 10px;
   }
 
