@@ -89,7 +89,7 @@
         </div>
     </div>
 <script>
-var socket = io.connect('http://localhost:8000');
+var socket = io.connect('https://chat-6jmb.onrender.com');
 function register() {
     var x = document.getElementById("login");
     var y = document.getElementById("register");
@@ -190,7 +190,6 @@ sendButton.addEventListener("click", () => {
     chatCount.textContent = `${messageCounter} Messages`;
   }
 });
-
 socket.on('message', function(data) {
   if (data.username !== username) { // Only display messages that are not sent by the current user
     const messageContainer = document.createElement('div');

@@ -36,3 +36,10 @@ io.on('connection', function(socket) {
 server = http.listen(8000, function() {
   console.log('listening on *:8000');
 });
+
+
+
+
+
+
+
