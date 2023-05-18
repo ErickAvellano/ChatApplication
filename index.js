@@ -21,6 +21,16 @@ io.on('connection', function(socket) {
     socket.username = username;
     io.emit('is_online', socket.username); // Notify all clients about the user joining the chat
   });
+  socket.on('message', function(data) {
+    if (socket.username) {
+      const messageData = {
+        username: socket.username,
+        text: data.text,
+        timestamp: Date.now(),
+      };
+      io.emit('message', messageData);
+    }
+  });
 });
 
 server = http.listen(8000, function() {

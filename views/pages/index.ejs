@@ -150,18 +150,18 @@ const indexContainer = document.getElementById("index-container");
 const onlineStatus = document.getElementById('online-status');
 let messageCounter = 0;
 
-socket.username = username;
 sendButton.addEventListener("click", () => {
   const message = messageInput.value.trim();
   if (message) {
     const timestamp = new Date();
     const data = {
-      username: socket.username,
+      username: username,
       text: message,
       timestamp: timestamp.getTime(), // Using getTime() to get the timestamp in milliseconds
     };
     // Emit a message event to the server with the message data
-    socket.emit("message", data);
+    socket.emit("message", data); // Send only the message content to the server
+    messageInput.value = "";
 
     // Create the message container elements
     const messageContainer = document.createElement('div');
@@ -177,7 +177,6 @@ sendButton.addEventListener("click", () => {
     messageContainer.appendChild(messageText);
     messageContainer.appendChild(messageTime);
 
-    
     messageContainer.classList.add('d-flex', 'justify-content-end', 'mb-4');
     messageUsername.classList.add("username_send");
     messageText.classList.add("msg_cotainer_send");
@@ -191,19 +190,24 @@ sendButton.addEventListener("click", () => {
     chatCount.textContent = `${messageCounter} Messages`;
   }
 });
+
 socket.on('message', function(data) {
-  if (socket.id !== data.senderId) { // Exclude the sender's socket ID
+  if (data.username !== username) { // Only display messages that are not sent by the current user
     const messageContainer = document.createElement('div');
+    const messageUsername = document.createElement('span');
     const messageText = document.createElement('span');
     const messageTime = document.createElement('span');
 
+    messageUsername.textContent = data.username + ": ";
     messageText.textContent = data.text;
     messageTime.textContent = new Date(data.timestamp).toLocaleTimeString();
 
+    messageContainer.appendChild(messageUsername);
     messageContainer.appendChild(messageText);
     messageContainer.appendChild(messageTime);
 
     messageContainer.classList.add('d-flex', 'justify-content-start', 'mb-4');
+    messageUsername.classList.add("username_send");
     messageText.classList.add("msg_cotainer");
     messageTime.classList.add("msg_time");
 
@@ -213,17 +217,21 @@ socket.on('message', function(data) {
   }
 });
 
-
 window.addEventListener("beforeunload", function() {
-    socket.emit('disconnect'); // Notify the server about the disconnection
+  socket.emit('disconnect'); // Notify the server about the disconnection
 });
+
+socket.on('connect', function() {
+  // Notify the server about the user's connection
+  socket.emit('is_online', socket.username);
+});
+
 socket.on('is_online', function(username) {
   // Update the welcome message and online status when a user joins the chat
   welcomeMessage.innerHTML = '🔵 <i>' + username + ' joined the chat.</i>';
-
-
   onlineStatus.innerHTML = 'Online'; // You can use an icon or custom styling here if desired
 });
+
 socket.on('user_left', function(username) {
   // Update the welcome message and online status when a user leaves the chat
   welcomeMessage.innerHTML = '🔴 <i>' + username + ' left the chat.</i>';
