@@ -141,7 +141,7 @@ position: absolute;
     cursor: pointer;
     position: absolute; /* Use absolute positioning */
     top: 110%; /* Adjust the vertical position */
-    left: 35%; /* Adjust the horizontal position */
+    left: 45%; /* Adjust the horizontal position */
     transform: translate(-50%, -50%); /* Center the button */
     background: linear-gradient(to right, #ffffff, #ffffff);
     border: 0;
