@@ -89,7 +89,7 @@
         </div>
     </div>
 <script>
-var socket = io.connect('https://chat-ee5v.onrender.com');
+//var socket = io.connect('https://chat-ee5v.onrender.com');
 //var socket = io.connect('http://localhost:8000');
 //var socket = io.connect('http://192.168.3.6:8000');
 $(document).ready(function() {
@@ -191,7 +191,7 @@ sendButton.addEventListener("click", () => {
     messageContainer.appendChild(messageTime);
 
     messageContainer.classList.add('d-flex', 'justify-content-end','mt-4', 'mb-4');
-    messageUsername.classList.add("username_send","mt-4");
+    messageUsername.classList.add("username_send");
     messageText.classList.add("msg_cotainer_send");
     messageTime.classList.add("msg_time_send");
 
@@ -219,7 +219,7 @@ socket.on('message', function(data) {
     messageContainer.appendChild(messageTime);
 
     messageContainer.classList.add('d-flex', 'justify-content-start', 'mt-4','mb-4');
-    messageUsername.classList.add("username","mt-4");
+    messageUsername.classList.add("username");
     messageText.classList.add("msg_cotainer");
     messageTime.classList.add("msg_time");
 
